@@ -26,7 +26,7 @@ const AnimatedButton = forwardRef(({
 }, ref) => {
   // Variantes de estilo
   const variants = {
-    primary: 'bg-teal-600/20 hover:from-teal-600 hover:to-teal-700 text-white shadow-lg hover:shadow-teal-400/30',
+    primary: 'bg-gray-900/50 hover:from-teal-600 hover:to-teal-700 text-white shadow-lg hover:shadow-teal-400/30',
     secondary: 'border-2 border-teal-600 text-teal-400 hover:bg-teal-400 hover:text-gray-900',
     danger: 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-lg hover:shadow-red-400/30',
     ghost: 'text-gray-700 hover:text-teal-500 hover:bg-gray-100'

@@ -50,7 +50,7 @@ export const AuthFormStyled = ({ mode, onSubmit, isLoading = false, error }) => 
   return (
       <MotionForm 
         onSubmit={handleSubmit(onSubmit)} 
-        className="relative z-10 w-full max-w-md space-y-6 p-8 bg-teal-200/5 backdrop-blur-sm border border-gray-700 shadow-2xl"
+        className="relative z-10 w-full max-w-md space-y-6 p-8 bg-gray-900/50 backdrop-blur-sm border border-gray-700 shadow-2xl"
         variants={formVariants}
         initial="hidden"
         animate="visible"

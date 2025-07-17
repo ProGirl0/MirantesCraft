@@ -20,18 +20,18 @@ const HomePage = () => {
   const features = [
     {
       icon: <LightBulbIcon className="h-8 w-8 text-teal-500" />,
-      title: 'Brainstorming Digital',
-      description: 'Capture ideias como se estivesse desenhando em um papel'
+      title: 'Gestão de Tarefas ',
+      description: 'Organize tarefas em quadros visuais. Priorize, atribua e acompanhe o progresso da sua equipe.'
     },
     {
       icon: <ChartBarIcon className="h-8 w-8 text-teal-500" />,
-      title: 'Gestão Visual',
-      description: 'Organize projetos com nosso sistema de quadros inteligentes'
+      title: 'Relatórios estatísticos',
+      description: 'Acompanhe estatísticas sobre seus projectos, tarefas a fazer, tarefas feitas e tarefas em progresso.'
     },
     {
       icon: <RocketLaunchIcon className="h-8 w-8 text-teal-500" />,
-      title: 'Execução Rápida',
-      description: 'Transforme ideias em tarefas acionáveis em minutos'
+      title: 'Colaboração em Equipe',
+      description: 'Compartilhe arquivos, comente tarefas e receba notificações instantâneas. Trabalhe junto sem sair da plataforma!'
     }
   ];
 

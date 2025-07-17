@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { AuthFormStyled as AuthForm } from '../components/auth/AuthForm';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -12,7 +12,7 @@ export const AuthPage = ({ mode }) => {
   const [info, setInfo] = useState('');
   const navigate = useNavigate();
 
-  const handleAuth = async ({ email, password, displayName }) => {
+  const handleAuth = async ({ email, password }) => {
     setError('');
     setInfo('');
     setLoading(true);
@@ -25,7 +25,7 @@ export const AuthPage = ({ mode }) => {
           setLoading(false);
           return;
         }
-        navigate('/dashboard'); // Redireciona após login bem-sucedido
+        navigate('/dashboard');
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         if (userCredential.user) {
@@ -54,9 +54,21 @@ export const AuthPage = ({ mode }) => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden">
+    <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden ">
+      {/* Background decorativo opcional */}
+      <Constellation />
+      {/* Loader animado */}
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/60">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full"
+          />
+        </div>
+      )}
       {/* Container principal */}
-      <div className="relative z-10 w-full max-w-2xl mx-auto">
+      <div className="relative z-10 w-full max-w-2xl mx-auto flex items-center justify-center min-h-[70vh]">
         {/* Formulário de autenticação */}
         <AuthForm 
           mode={mode} 

@@ -29,7 +29,7 @@ const Footer = () => {
               whileHover={{ scale: 1.02 }}
               className="flex items-center mb-4"
             >
-              <CodeBracketIcon className="h-8 w-8 text-teal-400 mr-2" />
+
               <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-teal-600">
                 Mirantes Craft
               </span>
@@ -37,58 +37,11 @@ const Footer = () => {
             <p className="text-gray-400 mb-4">
               Transformando ideias em realidade com ferramentas poderosas e intuitivas.
             </p>
-            <div className="flex space-x-4">
-              {['twitter', 'github', 'linkedin'].map((social) => (
-                <motion.a
-                  key={social}
-                  href="#"
-                  whileHover={{ y: -3 }}
-                  className="text-gray-400 hover:text-teal-400 transition-colors"
-                >
-                  <span className="sr-only">{social}</span>
-                  <div className="h-6 w-6">
-                    {/* Ícones sociais podem ser substituídos por biblioteca específica */}
-                    <div className={`bg-gray-400 hover:bg-teal-400 mask mask-${social} w-full h-full`}></div>
-                  </div>
-                </motion.a>
-              ))}
-            </div>
+
           </div>
 
-          {/* Links rápidos */}
-          <div>
-            <h3 className="text-lg font-semibold text-white mb-4">Links</h3>
-            <ul className="space-y-2">
-              {['Recursos', 'Preços', 'Blog', 'Documentação'].map((item) => (
-                <motion.li key={item} whileHover={{ x: 5 }}>
-                  <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
-                    {item}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
-          </div>
 
-          {/* Contato */}
-          <div>
-            <h3 className="text-lg font-semibold text-white mb-4">Contato</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <EnvelopeIcon className="h-5 w-5 text-teal-400 mr-2 mt-0.5 flex-shrink-0" />
-                <a href="mailto:contato@mirantescraft.com" className="text-gray-400 hover:text-teal-400 transition-colors">
-                  contato@mirantescraft.com
-                </a>
-              </li>
-              <li className="flex items-start">
-                <PhoneIcon className="h-5 w-5 text-teal-400 mr-2 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-400">+55 (11) 98765-4321</span>
-              </li>
-              <li className="flex items-start">
-                <MapPinIcon className="h-5 w-5 text-teal-400 mr-2 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-400">São Paulo, Brasil</span>
-              </li>
-            </ul>
-          </div>
+         
         </div>
 
         {/* Divider */}
@@ -104,7 +57,7 @@ const Footer = () => {
             className="flex items-center text-gray-500 hover:text-teal-400 transition-colors"
           >
             <HeartIcon className="h-4 w-4 mr-1" />
-            <span className="text-sm">Feito com carinho no Brasil</span>
+            <span className="text-sm">By Mirantes Technologies</span>
           </motion.div>
         </div>
       </div>

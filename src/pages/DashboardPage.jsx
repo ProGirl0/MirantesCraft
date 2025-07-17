@@ -61,7 +61,7 @@ export const DashboardPage = () => {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-12 h-12 border-4 border-teal-500 border-t-transparent rounded-full"
+          className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full"
         />
       </div>
     );
@@ -281,7 +281,7 @@ export const DashboardPage = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <FolderIcon className="h-8 w-8 text-teal-400" />
+
             <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-teal-600">
               Mirantes Craft
             </h1>

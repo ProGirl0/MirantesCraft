@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { db, auth } from '../firebase';
 import { doc, getDoc, deleteDoc, collection, getDocs } from 'firebase/firestore';
 import { FolderIcon, UsersIcon, CalendarIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { motion } from 'framer-motion';
 
 const ProjectsDetailsPage = () => {
   const { projectId } = useParams();
@@ -56,7 +57,15 @@ const ProjectsDetailsPage = () => {
     }
   };
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading) return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-900">
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full"
+      />
+    </div>
+  );
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
   if (!project) return null;
   if (!isMember) return <div style={{ color: 'red' }}>Você não tem permissão para acessar este projeto.</div>;
