@@ -1,43 +1,24 @@
 import { useEffect, useState, useRef } from 'react';
 import { auth } from '../../firebase';
-import { onAuthStateChanged, GoogleAuthProvider, sendEmailVerification, signInWithRedirect, getRedirectResult } from 'firebase/auth';
+import { onAuthStateChanged, sendEmailVerification } from 'firebase/auth';
 import { db } from '../../firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { AuthContext } from './AuthContext';
 
 export const AuthProvider = ({ children }) => {
+  // Mantém apenas para compatibilidade, mas não expõe mais contexto
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userProfile, setUserProfile] = useState(null);
-  const [isRedirecting, setIsRedirecting] = useState(false);
   const isMountedRef = useRef(true);
 
   useEffect(() => {
     isMountedRef.current = true;
-    // Verificar resultado de redirecionamento
-    const checkRedirectResult = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result && isMountedRef.current) {
-          console.log('✅ Login com redirecionamento bem-sucedido');
-          if (result.user && !result.user.emailVerified) {
-            await sendEmailVerification(result.user);
-          }
-          // Redirecionamento removido daqui
-        }
-      } catch (error) {
-        console.error('❌ Erro no resultado de redirecionamento:', error);
-      }
-    };
-    checkRedirectResult();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!isMountedRef.current) return;
       try {
         setUser(user);
         setLoading(false);
-        setIsRedirecting(false);
         if (user) {
-          console.log('✅ Usuário autenticado:', user.email);
           await setDoc(doc(db, 'users', user.uid), {
             email: user.email,
             uid: user.uid,
@@ -52,18 +33,14 @@ export const AuthProvider = ({ children }) => {
               setUserProfile(profileDoc.data());
             }
           }
-          // Redirecionamento removido daqui
         } else {
-          console.log('❌ Usuário não autenticado');
           if (isMountedRef.current) {
             setUserProfile(null);
           }
         }
       } catch (error) {
-        console.error('Erro no onAuthStateChanged:', error);
         if (isMountedRef.current) {
           setLoading(false);
-          setIsRedirecting(false);
         }
       }
     });
@@ -73,24 +50,7 @@ export const AuthProvider = ({ children }) => {
     };
   }, []);
 
-  const loginWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
-    if (isMountedRef.current) {
-      setIsRedirecting(true);
-    }
-    console.log('🔄 Iniciando login com Google via redirecionamento...');
-    try {
-      await signInWithRedirect(auth, provider);
-      return { redirect: true, message: 'Redirecionando para o Google...' };
-    } catch (error) {
-      if (isMountedRef.current) {
-        setIsRedirecting(false);
-      }
-      throw error;
-    }
-  };
-
+  // Funções auxiliares mantidas para compatibilidade
   const sendVerificationEmail = async () => {
     if (user && !user.emailVerified) {
       await sendEmailVerification(user);
@@ -111,7 +71,6 @@ export const AuthProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      console.error('Erro ao atualizar perfil:', error);
       throw error;
     }
   };
@@ -123,23 +82,9 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         setUserProfile(null);
       }
-    } catch (error) {
-      console.error('Erro no logout:', error);
-    }
+    } catch (error) {}
   };
 
-  return (
-    <AuthContext.Provider value={{ 
-      user, 
-      userProfile,
-      loading, 
-      isRedirecting,
-      logout, 
-      loginWithGoogle, 
-      sendVerificationEmail,
-      updateUserProfile 
-    }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  // Não expõe mais contexto, apenas renderiza os filhos
+  return children;
 };

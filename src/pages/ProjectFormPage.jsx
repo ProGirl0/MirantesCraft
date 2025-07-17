@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { collection, doc, addDoc, updateDoc, getDoc, getDocs, query, where } from 'firebase/firestore';
-import { useAuth } from '../components/auth/useAuth';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 import { useNotifications } from '../components/notifications/NotificationProvider';
 import { FolderIcon, UsersIcon, CalendarIcon, PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -10,7 +10,7 @@ const ProjectFormPage = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const isEdit = Boolean(projectId);
-  const { user } = useAuth();
+  const user = useCurrentUser();
   const { notifyProjectMemberAdded } = useNotifications();
   const [form, setForm] = useState({
     title: '',

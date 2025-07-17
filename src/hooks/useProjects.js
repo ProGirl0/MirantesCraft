@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react';
 import { collection, onSnapshot, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useCurrentUser } from './useCurrentUser';
 
 export function useProjects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const user = useCurrentUser();
 
   useEffect(() => {
+    if (!user) {
+      setProjects([]);
+      setLoading(false);
+      return;
+    }
     const unsubscribe = onSnapshot(
       collection(db, 'projects'),
       async (snapshot) => {
@@ -20,7 +27,11 @@ export function useProjects() {
             return project;
           })
         );
-        setProjects(projectsData);
+        // Filtrar projetos: só mostrar se o usuário é owner ou membro
+        const filtered = projectsData.filter(project =>
+          project.ownerId === user.uid || (Array.isArray(project.members) && project.members.includes(user.email))
+        );
+        setProjects(filtered);
         setLoading(false);
       },
       (err) => {
@@ -30,7 +41,7 @@ export function useProjects() {
       }
     );
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
   return { projects, loading, error };
 } 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '../auth/useAuth';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { db } from '../../firebase';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { PencilIcon, XMarkIcon, UserIcon, CalendarIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
 const TaskItem = ({ task, projectId, onDelete }) => {
-  const { user } = useAuth();
+  const user = useCurrentUser();
   const [showFullDescription, setShowFullDescription] = useState(false);
   
   const {
@@ -97,8 +97,6 @@ const TaskItem = ({ task, projectId, onDelete }) => {
           </div>
         )}
       </div>
-      
-
       
       <div className="absolute top-2 right-2 flex gap-1">
         <Link 

@@ -18,7 +18,7 @@ import {
 import TaskItem from './taskItem';
 import { db } from '../../firebase';
 import { collection, getDocs, doc, getDoc, writeBatch, query, where } from 'firebase/firestore';
-import { useAuth } from '../auth/useAuth';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useNotifications } from '../notifications/NotificationProvider';
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 
@@ -47,7 +47,7 @@ const DroppableColumn = ({ id, children, title }) => {
 };
 
 const TaskBoard = ({ projectId }) => {
-  const { user } = useAuth();
+  const user = useCurrentUser();
   const { notifyTaskStatusChanged } = useNotifications();
   const [tasks, setTasks] = useState({ todo: [], inprogress: [], done: [] });
   const [loading, setLoading] = useState(true);

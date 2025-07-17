@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
-import { useAuth } from '../components/auth/useAuth';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 import AnimatedButton from '../components/ui/Button';
 import NotificationBell from '../components/notifications/NotificationBell';
 
@@ -17,13 +17,15 @@ import {
   UserGroupIcon as UsersIcon,
   PlusIcon
 } from '@heroicons/react/24/outline';
-import { useProjects } from '../hooks/useProjects'; // Adicione este hook
+import { useProjects } from '../hooks/useProjects';
+import { auth } from '../firebase';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 export const DashboardPage = () => {
-  const { user, loading, logout } = useAuth();
-  const { projects, loading: loadingProjects } = useProjects(); // Busca projetos reais
+  const user = useCurrentUser();
+  const [loading, setLoading] = useState(true);
+  const { projects, loading: loadingProjects } = useProjects();
   const navigate = useNavigate();
   const hasRedirected = useRef(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -41,11 +43,17 @@ export const DashboardPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!loading && !user && !hasRedirected.current) {
+    setLoading(user === undefined);
+    if (user === null && !hasRedirected.current) {
       hasRedirected.current = true;
       navigate('/');
     }
-  }, [user, loading, navigate]);
+  }, [user, navigate]);
+
+  const logout = async () => {
+    await auth.signOut();
+    navigate('/');
+  };
 
   if (loading || loadingProjects) {
     return (
@@ -275,7 +283,7 @@ export const DashboardPage = () => {
           >
             <FolderIcon className="h-8 w-8 text-teal-400" />
             <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-teal-600">
-              IdeaFlow
+              Mirantes Craft
             </h1>
           </motion.div>
 
@@ -304,7 +312,7 @@ export const DashboardPage = () => {
                 >
                   <div className="px-4 py-3 border-b border-gray-700">
                     <p className="text-sm text-gray-300">Logado como</p>
-                    <p className="text-sm font-medium text-white truncate">{user.email}</p>
+                    <p className="text-sm font-medium text-white truncate">{user?.email}</p>
                   </div>
                   <button
                     onClick={logout}

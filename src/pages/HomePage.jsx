@@ -61,7 +61,7 @@ const HomePage = () => {
             style={{ textShadow: '0 4px 20px rgba(45, 212, 191, 0.3)' }}
           >
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-teal-600">
-              IdeaFlow
+              Mirantes Craft
             </span>
           </motion.h1>
           

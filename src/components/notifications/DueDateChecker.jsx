@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useNotifications } from './NotificationProvider';
-import { useAuth } from '../auth/useAuth';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { db } from '../../firebase';
 import { collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
 
 const DueDateChecker = () => {
-  const { user } = useAuth();
+  const user = useCurrentUser();
   const { notifyTaskDueDate, notifyTaskOverdue } = useNotifications();
 
   useEffect(() => {
@@ -31,34 +31,54 @@ const DueDateChecker = () => {
             const tasksSnapshot = await getDocs(tasksQuery);
             const now = new Date();
 
-            tasksSnapshot.docs.forEach(taskDoc => {
+            for (const taskDoc of tasksSnapshot.docs) {
               const task = taskDoc.data();
-              if (!task.dueDate) return;
+              if (!task.dueDate) continue;
 
               const dueDate = new Date(task.dueDate);
               const diffInHours = (dueDate - now) / (1000 * 60 * 60);
 
               // Notificar se vence em 24h
               if (diffInHours > 0 && diffInHours <= 24) {
-                notifyTaskDueDate(
-                  projectDoc.id,
-                  project.title,
-                  task.title,
-                  user.uid,
-                  dueDate.toLocaleDateString('pt-BR')
-                );
+                // Verificar se já existe notificação igual não lida
+                const existing = await getDocs(query(
+                  collection(db, 'notifications'),
+                  where('recipientId', '==', user.uid),
+                  where('taskTitle', '==', task.title),
+                  where('type', '==', 'task_due_date'),
+                  where('read', '==', false)
+                ));
+                if (existing.empty) {
+                  notifyTaskDueDate(
+                    projectDoc.id,
+                    project.title,
+                    task.title,
+                    user.uid,
+                    dueDate.toLocaleDateString('pt-BR')
+                  );
+                }
               }
 
               // Notificar se está vencida
               if (diffInHours < 0 && task.status !== 'done') {
-                notifyTaskOverdue(
-                  projectDoc.id,
-                  project.title,
-                  task.title,
-                  user.uid
-                );
+                // Verificar se já existe notificação igual não lida
+                const existing = await getDocs(query(
+                  collection(db, 'notifications'),
+                  where('recipientId', '==', user.uid),
+                  where('taskTitle', '==', task.title),
+                  where('type', '==', 'task_overdue'),
+                  where('read', '==', false)
+                ));
+                if (existing.empty) {
+                  notifyTaskOverdue(
+                    projectDoc.id,
+                    project.title,
+                    task.title,
+                    user.uid
+                  );
+                }
               }
-            });
+            }
           }
         });
 

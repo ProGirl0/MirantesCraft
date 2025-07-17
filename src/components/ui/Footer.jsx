@@ -31,7 +31,7 @@ const Footer = () => {
             >
               <CodeBracketIcon className="h-8 w-8 text-teal-400 mr-2" />
               <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-teal-600">
-                IdeaFlow
+                Mirantes Craft
               </span>
             </motion.div>
             <p className="text-gray-400 mb-4">
@@ -75,8 +75,8 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <EnvelopeIcon className="h-5 w-5 text-teal-400 mr-2 mt-0.5 flex-shrink-0" />
-                <a href="mailto:contato@ideaflow.com" className="text-gray-400 hover:text-teal-400 transition-colors">
-                  contato@ideaflow.com
+                <a href="mailto:contato@mirantescraft.com" className="text-gray-400 hover:text-teal-400 transition-colors">
+                  contato@mirantescraft.com
                 </a>
               </li>
               <li className="flex items-start">
@@ -97,7 +97,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm mb-4 md:mb-0">
-            © {currentYear} IdeaFlow. Todos os direitos reservados.
+            © {currentYear} Mirantes Craft. Todos os direitos reservados.
           </p>
           <motion.div 
             whileHover={{ scale: 1.05 }}

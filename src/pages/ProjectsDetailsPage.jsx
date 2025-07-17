@@ -1,15 +1,14 @@
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import TaskBoard from '../components/tasks/taskBoard';
 import { useState, useEffect } from 'react';
-import { db } from '../firebase';
+import { db, auth } from '../firebase';
 import { doc, getDoc, deleteDoc, collection, getDocs } from 'firebase/firestore';
-import { useAuth } from '../components/auth/useAuth';
 import { FolderIcon, UsersIcon, CalendarIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 const ProjectsDetailsPage = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const user = auth.currentUser;
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

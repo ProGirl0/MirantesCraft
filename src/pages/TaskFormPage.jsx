@@ -1,8 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { db } from '../firebase';
+import { db, auth } from '../firebase';
 import { collection, doc, addDoc, updateDoc, getDoc, getDocs, query, where } from 'firebase/firestore';
-import { useAuth } from '../components/auth/useAuth';
 import { useNotifications } from '../components/notifications/NotificationProvider';
 import { DocumentTextIcon, UserIcon, CalendarIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 
@@ -10,7 +9,7 @@ const TaskFormPage = () => {
   const navigate = useNavigate();
   const { projectId, taskId } = useParams();
   const isEdit = Boolean(taskId);
-  const { user } = useAuth();
+  const user = auth.currentUser;
   const { notifyTaskCreated } = useNotifications();
   const [form, setForm] = useState({
     title: '',

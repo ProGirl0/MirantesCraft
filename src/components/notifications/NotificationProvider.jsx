@@ -1,14 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { db } from '../../firebase';
 import { collection, query, where, onSnapshot, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
-import { useAuth } from '../auth/useAuth';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 
 const NotificationContext = createContext();
 
 export const useNotifications = () => useContext(NotificationContext);
 
 export const NotificationProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useCurrentUser();
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
