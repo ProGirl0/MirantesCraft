@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
-import '../../assets/css/button.css';
+import '../../assets/css/Button.css';
 
 const AnimatedButton = forwardRef(({
   children,
