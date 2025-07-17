@@ -10,6 +10,7 @@ import ProjectFormPage from './pages/ProjectFormPage';
 import TaskFormPage from './pages/TaskFormPage';
 import ProjectsDetailsPage from './pages/ProjectsDetailsPage';
 import AuthDebug from './components/auth/AuthDebug';
+import AuthRedirector from './components/auth/AuthRedirector';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <NotificationProvider>
         <DueDateChecker />
         <BrowserRouter>
+          <AuthRedirector />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<AuthPage mode="login" />} />

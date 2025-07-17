@@ -4,7 +4,6 @@ import { onAuthStateChanged, GoogleAuthProvider, sendEmailVerification, signInWi
 import { db } from '../../firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { AuthContext } from './AuthContext';
-import { useNavigate } from 'react-router-dom';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -12,11 +11,9 @@ export const AuthProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const isMountedRef = useRef(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     isMountedRef.current = true;
-    
     // Verificar resultado de redirecionamento
     const checkRedirectResult = async () => {
       try {
@@ -26,28 +23,21 @@ export const AuthProvider = ({ children }) => {
           if (result.user && !result.user.emailVerified) {
             await sendEmailVerification(result.user);
           }
-          // Redirecionar para dashboard após login bem-sucedido
-          navigate('/dashboard');
+          // Redirecionamento removido daqui
         }
       } catch (error) {
         console.error('❌ Erro no resultado de redirecionamento:', error);
       }
     };
-    
     checkRedirectResult();
-    
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!isMountedRef.current) return;
-      
       try {
         setUser(user);
         setLoading(false);
         setIsRedirecting(false);
-        
         if (user) {
           console.log('✅ Usuário autenticado:', user.email);
-          
-          // Salva/atualiza usuário na coleção 'users' para autocomplete
           await setDoc(doc(db, 'users', user.uid), {
             email: user.email,
             uid: user.uid,
@@ -56,20 +46,13 @@ export const AuthProvider = ({ children }) => {
             emailVerified: user.emailVerified,
             lastLogin: new Date(),
           }, { merge: true });
-
-          // Buscar perfil do usuário
           if (isMountedRef.current) {
             const profileDoc = await getDoc(doc(db, 'users', user.uid));
             if (profileDoc.exists() && isMountedRef.current) {
               setUserProfile(profileDoc.data());
             }
           }
-          
-          // Redirecionar para dashboard se estiver em página de login/registro
-          const currentPath = window.location.pathname;
-          if (currentPath === '/login' || currentPath === '/register') {
-            navigate('/dashboard');
-          }
+          // Redirecionamento removido daqui
         } else {
           console.log('❌ Usuário não autenticado');
           if (isMountedRef.current) {
@@ -84,7 +67,6 @@ export const AuthProvider = ({ children }) => {
         }
       }
     });
-    
     return () => {
       isMountedRef.current = false;
       unsubscribe();
@@ -93,22 +75,13 @@ export const AuthProvider = ({ children }) => {
 
   const loginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
-    
-    // Configurar provider para melhor experiência
-    provider.setCustomParameters({
-      prompt: 'select_account'
-    });
-    
+    provider.setCustomParameters({ prompt: 'select_account' });
     if (isMountedRef.current) {
       setIsRedirecting(true);
     }
     console.log('🔄 Iniciando login com Google via redirecionamento...');
-    
     try {
-      // Usar apenas redirecionamento para evitar problemas de COOP
       await signInWithRedirect(auth, provider);
-      
-      // Retornar indicador de redirecionamento
       return { redirect: true, message: 'Redirecionando para o Google...' };
     } catch (error) {
       if (isMountedRef.current) {
@@ -126,14 +99,11 @@ export const AuthProvider = ({ children }) => {
 
   const updateUserProfile = async (profileData) => {
     if (!user) return;
-    
     try {
       await setDoc(doc(db, 'users', user.uid), {
         ...profileData,
         updatedAt: new Date(),
       }, { merge: true });
-      
-      // Atualizar estado local
       if (isMountedRef.current) {
         const updatedDoc = await getDoc(doc(db, 'users', user.uid));
         if (updatedDoc.exists()) {
