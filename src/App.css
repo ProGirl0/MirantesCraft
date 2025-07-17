@@ -1,0 +1,27 @@
+body{
+    background-color:black;
+}
+
+/* Garante que o html e body ocupem toda a altura */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Layout principal */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1 0 auto; /* Cresce, não encolhe, tamanho automático */
+  width: 100%;
+}
+
+.footer {
+  flex-shrink: 0; /* Não encolhe */
+}
+

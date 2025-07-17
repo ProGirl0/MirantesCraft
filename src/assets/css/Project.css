@@ -1,0 +1,83 @@
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .projectGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .projectCard {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .projectCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .projectCard h3 {
+    margin: 0 0 1rem 0;
+    color: #333;
+  }
+  
+  .projectMeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .em-andamento {
+    background-color: #e0f2fe;
+    color: #0369a1;
+  }
+  
+  .concluído {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+  
+  .planejamento {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+  
+  .deadline {
+    font-size: 0.875rem;
+    color: #666;
+  }
+  
+  .loading,
+  .empty {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+  }
+  
+  .error {
+    color: #dc2626;
+    text-align: center;
+    padding: 2rem;
+  }
