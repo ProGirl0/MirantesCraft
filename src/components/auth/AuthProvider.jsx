@@ -4,6 +4,7 @@ import { onAuthStateChanged, GoogleAuthProvider, sendEmailVerification, signInWi
 import { db } from '../../firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { AuthContext } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -11,6 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const isMountedRef = useRef(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -24,6 +26,8 @@ export const AuthProvider = ({ children }) => {
           if (result.user && !result.user.emailVerified) {
             await sendEmailVerification(result.user);
           }
+          // Redirecionar para dashboard após login bem-sucedido
+          navigate('/dashboard');
         }
       } catch (error) {
         console.error('❌ Erro no resultado de redirecionamento:', error);
@@ -41,6 +45,8 @@ export const AuthProvider = ({ children }) => {
         setIsRedirecting(false);
         
         if (user) {
+          console.log('✅ Usuário autenticado:', user.email);
+          
           // Salva/atualiza usuário na coleção 'users' para autocomplete
           await setDoc(doc(db, 'users', user.uid), {
             email: user.email,
@@ -58,7 +64,14 @@ export const AuthProvider = ({ children }) => {
               setUserProfile(profileDoc.data());
             }
           }
+          
+          // Redirecionar para dashboard se estiver em página de login/registro
+          const currentPath = window.location.pathname;
+          if (currentPath === '/login' || currentPath === '/register') {
+            navigate('/dashboard');
+          }
         } else {
+          console.log('❌ Usuário não autenticado');
           if (isMountedRef.current) {
             setUserProfile(null);
           }

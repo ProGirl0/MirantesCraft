@@ -17,17 +17,26 @@ export const AuthPage = ({ mode }) => {
     try {
       if (mode === 'login') {
         await signInWithEmailAndPassword(auth, email, password);
+        console.log('✅ Login tradicional bem-sucedido');
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
+        console.log('✅ Registro bem-sucedido');
       }
-      navigate('/dashboard');
+      // O redirecionamento será feito pelo AuthProvider
     } catch (error) {
+      console.error('❌ Erro de autenticação:', error);
       setError(
-        error.code === 'auth/invalid-credential' 
-          ? 'Credenciais inválidas. Por favor, tente novamente.'
+        error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found'
+          ? 'Email ou senha incorretos. Por favor, tente novamente.'
+          : error.code === 'auth/wrong-password'
+          ? 'Senha incorreta. Por favor, tente novamente.'
           : error.code === 'auth/email-already-in-use'
           ? 'Este email já está em uso.'
-          : 'Ocorreu um erro. Por favor, tente novamente.'
+          : error.code === 'auth/weak-password'
+          ? 'A senha deve ter pelo menos 6 caracteres.'
+          : error.code === 'auth/invalid-email'
+          ? 'Email inválido.'
+          : `Erro: ${error.message}`
       );
     } finally {
       setLoading(false);

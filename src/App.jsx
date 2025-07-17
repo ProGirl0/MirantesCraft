@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage';
 import ProjectFormPage from './pages/ProjectFormPage';
 import TaskFormPage from './pages/TaskFormPage';
 import ProjectsDetailsPage from './pages/ProjectsDetailsPage';
+import AuthDebug from './components/auth/AuthDebug';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
+        <AuthDebug />
       </NotificationProvider>
     </AuthProvider>
   );
